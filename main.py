@@ -31,13 +31,13 @@ if __name__=='__main__':
     ys = tf.placeholder(tf.float32, [None,10])
     L1 = Add_parameters(xs, 784, 100, tf.nn.sigmoid)
     L2 = Add_parameters(L1, 100, 10, tf.nn.softmax)
-    loss = tf.reduce_mean(tf.square(ys - L2))
-    #loss = tf.reduce_mean(-tf.reduce_sum(ys * tf.log(L2), reduction_indices=[1]) )
+    #loss = tf.reduce_mean(tf.square(ys - L2))
+    loss = tf.reduce_mean(-tf.reduce_sum(ys * tf.log(L2), reduction_indices=[1]) )
     solve = tf.train.GradientDescentOptimizer(0.5).minimize(loss)
     INIT = tf.global_variables_initializer()
     sess = tf.Session()
     sess.run(INIT)
-    for i in range(100000):
+    for i in range(10000):
         batch_x,batch_y = mnist.train.next_batch(50)
         sess.run(solve, feed_dict={xs:batch_x, ys:batch_y})
         if i%100 == 0:
